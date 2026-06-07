@@ -10,7 +10,7 @@ const CONFIG = {
   team: { name: "SOLOC", suffix: "MEDIA" },
 
   // The jobs filled on a given Sunday. Order here = column order in the table.
-  roles: ["FOH / Sound", "Lyrics / Slides", "Camera", "Livestream", "Photography", "Video", "Graphic Design"],
+  roles: ["FOH / Sound", "Lyrics / Slides", "Photography", "Handheld", "Videostand", "Edit Video"],
 
   /* Two teams. People serve every other week, so Team A serves one Sunday,
      Team B the next, and so on.  */
@@ -20,7 +20,7 @@ const CONFIG = {
       "Lyrics / Slides":"Bilise",
       "Photography":    "Kaku",
       "Handheld":       "Sifan D.",
-      "Video":          "Beki",
+      "Videostand":          "Beki",
       "Edit Video":     "Sifan"
     },
     B: {
@@ -47,7 +47,7 @@ const CONFIG = {
   },
 
   /* ---- Handbook content. Add as many topics as you like.
-     video: paste a YouTube link (watch?v=… or youtu.be/…) or leave "". ---- 
+     video: paste a YouTube link (watch?v=… or youtu.be/…) or leave "". ---- */
   training: [
     {
       title: "FOH / Sound",
@@ -128,6 +128,4 @@ const CONFIG = {
       style: "Once the fundamentals are reflex, your taste leads. Bold and graphic, or quiet and editorial — a consistent visual voice is what people will recognize as yours."
     }
   ]
-    */
-   
 };
