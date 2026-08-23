@@ -17,10 +17,10 @@ const CONFIG = {
   teams: {
     A: {
       "FOH / Sound":    "Endalk",
-      "Lyrics / Slides":"Bilise",
+      "Lyrics / Slides":"Koke",
       "Photography":    "Kaku",
-      "Handheld":       "Sifan D.",
-      "Videostand":          "Beki",
+      "Handheld":       "Joshua",
+      "Videostand":     "Beki",
       "Edit Video":     "Sifan"
     },
     B: {
