@@ -12,28 +12,21 @@ const CONFIG = {
   // The jobs filled on a given Sunday. Order here = column order in the table.
   roles: ["FOH / Sound", "Lyrics / Slides", "Photography", "Handheld", "Videostand", "Edit Video"],
 
-  /* Two teams. People serve every other week, so Team A serves one Sunday,
-     Team B the next, and so on.  */
-  teams: {
-    A: {
-      "FOH / Sound":    "Endalk",
-      "Lyrics / Slides":"Koke",
-      "Photography":    "Kaku",
-      "Handheld":       "Joshua",
-      "Videostand":     "Beki",
-      "Edit Video":     "Sifan"
-    },
-    B: {
-      "FOH / Sound":    "Sharon",
-      "Lyrics / Slides":"Michu",
-      "Photography":    "Heran",
-      "Handheld":       "Rebira",
-      "Videostand":     "Wabi",
-      "Edit Video":     "Abi"
-    }
+  /* Each role has its own list of people. Every Sunday the list moves forward
+     one person, then wraps back to the top. Lists can be different lengths:
+     2 people = every other week, 3 people = every third week, and so on.
+     To add someone, add their name to the role's list (order = serving order). */
+  rotation: {
+    "FOH / Sound":     ["Endalk", "Sharon", "Biratu"],
+    "Lyrics / Slides": ["Koke",   "Michu"],
+    "Photography":     ["Kaku",   "Heran"],
+    "Handheld":        ["Joshua", "Rebira"],
+    "Videostand":      ["Beki",   "Wabi", "Ansin"],
+    "Edit Video":      ["Sifan",  "Abi"]
   },
 
-  // The first Sunday Team A serves (YYYY-MM-DD). Rotation flows from here.
+  // The Sunday where every list starts at its first name (YYYY-MM-DD).
+  // Rotation flows from here.
   rotationStartSunday: "2026-06-07",
 
   // How many upcoming Sundays to list.

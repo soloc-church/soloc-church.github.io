@@ -17,14 +17,19 @@ function upcomingSunday(today){
   const t = midnight(today);
   return addDays(t, (7 - t.getDay()) % 7); // today if Sunday, else next Sunday
 }
-function weekIndex(date){ // 0,1,2... from rotation start; even=A, odd=B
+function weekIndex(date){ // 0,1,2... weeks since rotation start
   const start = midnight(parseLocal(CONFIG.rotationStartSunday));
   return Math.round((midnight(date) - start) / WEEK);
 }
-function teamFor(date){ const i = weekIndex(date); return ((i % 2)+2)%2 === 0 ? "A" : "B"; }
 
+// Each role cycles through its own list, one step per week.
 function assignmentsFor(date){
-  const base = { ...CONFIG.teams[teamFor(date)] };
+  const i = weekIndex(date);
+  const base = {};
+  CONFIG.roles.forEach(r => {
+    const list = CONFIG.rotation[r] || [];
+    base[r] = list.length ? list[((i % list.length) + list.length) % list.length] : "—";
+  });
   const iso = isoLocal(date);
   if (CONFIG.overrides[iso]) Object.assign(base, CONFIG.overrides[iso]);
   return base;
@@ -35,7 +40,7 @@ function buildSchedule(){
   const list = [];
   for (let i=0;i<CONFIG.weeksToShow;i++){
     const d = addDays(start, i*7);
-    list.push({ date:d, team:teamFor(d), people:assignmentsFor(d) });
+    list.push({ date:d, people:assignmentsFor(d) });
   }
   return list;
 }
@@ -46,7 +51,7 @@ let activeName = "";
 /* ---- everyone's name list (for the finder) ---- */
 function allNames(){
   const s = new Set();
-  ["A","B"].forEach(t => Object.values(CONFIG.teams[t]).forEach(n => s.add(n)));
+  Object.values(CONFIG.rotation).forEach(list => list.forEach(n => s.add(n)));
   Object.values(CONFIG.overrides).forEach(o => Object.values(o).forEach(n => { if(n && n!=="—") s.add(n); }));
   return [...s].sort((a,b)=>a.localeCompare(b));
 }
@@ -65,7 +70,7 @@ function renderNow(){
   $("#nowPanel").innerHTML = `
     <div class="now-top">
       <div>
-        <span class="onair"><span class="led"></span>On air · Team ${first.team}</span>
+        <span class="onair"><span class="led"></span>On air</span>
         <div class="now-date">${fmtDate(first.date)}</div>
       </div>
       <span class="now-rel">${rel}</span>
@@ -89,7 +94,7 @@ function renderTable(){
     }).join("");
     const livePill = live ? `<span class="live-pill"><span class="led"></span>This Sunday</span>` : "";
     return `<tr class="${live?'live':''} ${dim?'dim':''}">
-        <td class="date" data-label="Date">${fmtShort(w.date)}<span class="wk">Team ${w.team} ${livePill}</span></td>
+        <td class="date" data-label="Date">${fmtShort(w.date)}<span class="wk">${livePill}</span></td>
         ${cells}
       </tr>`;
   }).join("");
@@ -197,9 +202,6 @@ function boot(){
   initTheme();
   $("#statPeople").textContent = allNames().length;
   $("#statRoles").textContent = CONFIG.roles.length;
-  $("#schedNote").innerHTML =
-    "This schedule generates itself from the rotation in <code>CONFIG</code> and rolls forward every week — no Monday edits needed. " +
-    "To change names, edit <code>js/config.js</code> (teams.A / teams.B). For a one-off swap, add a date to <code>overrides</code>.";
 
   renderDisciplines();
   renderNow();
